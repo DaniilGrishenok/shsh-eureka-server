@@ -8,3 +8,19 @@ eureka:
     fetch-registry: false
     service-url:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka
+spring:
+  application:
+    name: eureka-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/auth-service-db
+    username: postgres
+    password: 12345
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database: postgresql
+    properties:
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+      hibernate.id.new_generator_mappings: true
+    hibernate:
+      ddl-auto: update
+    generate-ddl: true
