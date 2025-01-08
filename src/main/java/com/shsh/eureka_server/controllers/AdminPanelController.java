@@ -12,6 +12,6 @@ public class AdminPanelController {
 
     @GetMapping
     public String showAdminPanel() {
-        return "admin-panel"; // Возвращает HTML-страницу для админ-панели
+        return "admin-panel";
     }
 }

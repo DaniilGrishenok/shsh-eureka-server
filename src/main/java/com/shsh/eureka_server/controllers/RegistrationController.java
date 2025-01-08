@@ -18,7 +18,7 @@ public class RegistrationController {
 
     @GetMapping
     public String showRegistrationPage() {
-        return "register"; // Возвращает HTML-страницу для регистрации
+        return "register";
     }
 
     @PostMapping

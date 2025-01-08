@@ -1,21 +1,86 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Registration</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Admin</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f8ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 500px;
+            text-align: center;
+        }
+        .form-container h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #4c4c4c;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #4c4c4c;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4c90f0;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #3578e5;
+        }
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
-<h1>Register Admin</h1>
-<form th:action="@{/register}" method="post">
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username" required><br>
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required><br>
-    <label for="confirmationWord">Confirmation Word:</label>
-    <input type="text" id="confirmationWord" name="confirmationWord" required><br>
-    <button type="submit">Register</button>
-</form>
-<div th:if="${error}">
-    <p th:text="${error}" style="color: red;"></p>
+
+<div class="form-container">
+    <h1>Регистрация админа</h1>
+    <form th:action="@{/register}" method="post">
+        <label for="username">Никнейм:</label>
+        <input type="text" id="username" name="username" required><br>
+
+        <label for="password">Пароль:</label>
+        <input type="password" id="password" name="password" required><br>
+
+        <label for="confirmationWord">Введите подтверждающее слово:</label>
+        <input type="text" id="confirmationWord" name="confirmationWord" required><br>
+
+        <button type="submit">Регистрация</button>
+    </form>
+
+    <div th:if="${error}">
+        <p class="error-message" th:text="${error}"></p>
+    </div>
 </div>
+
 </body>
 </html>

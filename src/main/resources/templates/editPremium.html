@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Изменение премиум статуса</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .form-container {
+            width: 60%;
+            margin: 50px auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #1e3a8a; /* Синий цвет */
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        input[type="text"], select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #2563eb;
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .status-message {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 1.2em;
+            color: #2563eb;
+        }
+
+        .info-container {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 1.1em;
+        }
+
+        .premium-status {
+            color: #34d399; /* Зеленый для активного статуса */
+            font-weight: bold;
+        }
+
+        .expired-status {
+            color: #f87171; /* Красный для истекшего статуса */
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="form-container">
+    <h1>Изменение премиум статуса</h1>
+
+    <form th:action="@{/users/{id}/premium(id=${profile.id})}" method="post">
+        <label for="userId">ID пользователя:</label>
+        <input type="text" id="userId" name="userId" th:value="${profile.id}" readonly>
+
+        <label for="currentPremium">Текущий премиум статус:</label>
+        <input type="text" id="currentPremium" name="currentPremium" th:value="${profile.isPremium ? 'Да' : 'Нет'}" readonly>
+
+        <label for="changePremium">Изменить статус на:</label>
+        <select id="changePremium" name="changePremium">
+            <option value="true">Активировать премиум</option>
+            <option value="false">Отключить премиум</option>
+        </select>
+
+        <button type="submit" class="btn">Сохранить изменения</button>
+    </form>
+
+    <a href="/users" class="back-link">Вернуться к списку пользователей</a>
+
+    <!-- Сообщение об обновлении статуса -->
+    <div th:if="${updateStatus != null}" class="status-message" th:text="${updateStatus}"></div>
+
+    <!-- Информация о премиум статусе -->
+    <div class="info-container" th:if="${profile.premiumExpiresAt != null}">
+        <p>Статус премиума: <span th:text="${profile.isPremium ? 'Активен' : 'Не активен'}" class="premium-status"></span></p>
+        <p>Премиум статус истекает: <span th:text="${premiumExpiresAtFormatted}"></span>(по московскому времени)</p>
+    </div>
+
+    <div class="info-container" th:if="${profile.premiumExpiresAt == null}">
+        <p>Премиум статус не активирован.</p>
+    </div>
+</div>
+</body>
+</html>

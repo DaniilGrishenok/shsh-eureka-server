@@ -11,5 +11,5 @@ public class ConfirmationWord {
     private Long id;
 
     @Column(unique = true, nullable = false)
-    private String word; // Кодовое слово
+    private String word;
 }

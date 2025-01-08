@@ -1,11 +1,159 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Admin Panel</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f8ff;
+            color: #333;
+        }
+
+        header {
+            background-color: #0044cc;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        nav {
+            display: flex;
+            gap: 15px;
+        }
+
+        nav a {
+            color: #f0f8ff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #e5e5ff;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        .section {
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .section h2 {
+            margin: 0 0 10px;
+            color: #0044cc;
+        }
+
+        .button {
+            background-color: #6600cc;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: #5500aa;
+        }
+
+        .online-users {
+            font-size: 48px;
+            font-weight: bold;
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            width: 250px;
+            margin: 20px auto;
+        }
+
+        .online-users.green {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .online-users.red {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .online-users span {
+            font-size: 24px;
+            color: inherit;
+        }
+    </style>
 </head>
 <body>
-<h1>Admin Panel</h1>
-<p>Welcome to the admin panel!</p>
-<a th:href="@{/logout}">Logout</a>
+
+<header>
+    <h1>Админ-панель ЩЩ мессенджера</h1>
+    <nav>
+        <a th:href="@{/users}">Пользователи</a>
+        <a th:href="@{/messages}">Сообщения</a>
+        <a th:href="@{/statistics}">Статистика</a>
+        <a th:href="@{/}">Мониторинг eureka</a>
+        <a th:href="@{/logout}">Выйти</a>
+    </nav>
+</header>
+
+<div class="container">
+    <div class="section">
+        <h2>Добро пожаловать!</h2>
+        <p>Вы вошли в админ-панель ЩЩ мессенджера. Выберите раздел для работы.</p>
+    </div>
+
+    <div class="section">
+        <h2>Статистика</h2>
+        <div id="onlineUsers" class="online-users red">
+            Пользователей онлайн: <span id="onlineCount">0</span>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const onlineUsersElement = document.getElementById("onlineUsers");
+    const onlineCountElement = document.getElementById("onlineCount");
+
+    function updateOnlineUsers() {
+        fetch("/api/stats/online-users/count")
+            .then(response => response.json())
+            .then(onlineUsers => {
+                onlineCountElement.textContent = onlineUsers;
+
+                // Добавляем классы в зависимости от количества пользователей
+                if (onlineUsers === 0) {
+                    onlineUsersElement.classList.remove('green');
+                    onlineUsersElement.classList.add('red');
+                } else {
+                    onlineUsersElement.classList.remove('red');
+                    onlineUsersElement.classList.add('green');
+                }
+            })
+            .catch(error => {
+                console.error("Ошибка при получении данных о пользователях онлайн:", error);
+            });
+    }
+
+    setInterval(updateOnlineUsers, 2000);
+
+    updateOnlineUsers();
+</script>
+
 </body>
 </html>

@@ -28,10 +28,17 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/register", "/login", "/").permitAll() // Регистрация и логин доступны без авторизации
+                .authorizeRequests(auth -> auth
+                        // Открытые страницы
+                        .requestMatchers("/register", "/login", "/", "/eureka").permitAll() // Регистрация и логин доступны без авторизации
+
+                        // Страницы, требующие логина
                         .requestMatchers("/admin/**").hasAuthority("ADMIN") // Админ-панель доступна только администраторам
-                        .anyRequest().authenticated()
+                        .requestMatchers("/users/**").authenticated() // Страница пользователей доступна только авторизованным
+                        .requestMatchers("/users/{id}/premium").authenticated() // Страница премиум статуса доступна только авторизованным
+
+                        // Все остальные страницы без авторизации
+                        .anyRequest().permitAll()
                 )
                 .formLogin(form -> form
                         .loginPage("/login") // Явное указание на страницу логина
